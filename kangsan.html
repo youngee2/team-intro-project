@@ -120,41 +120,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Firebase + 좋아요 기능 -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCK8k8n1SjyK0IY-XBWlcJUCBC0Vr62zks",
-      authDomain: "sparta-7bf56.firebaseapp.com",
-      projectId: "sparta-7bf56",
-      storageBucket: "sparta-7bf56.appspot.com",
-      messagingSenderId: "890997503675",
-      appId: "1:890997503675:web:6e1062b29fd62f90375b9e",
-      measurementId: "G-F3WLHH58CE"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    $(document).ready(function () {
-      $("#likeBtn").on("click", async function (e) {
-        e.preventDefault();
-        try {
-          const docRef = doc(db, "likes", "yR03Wjor7bOgxEpsbPBg");
-          const docSnap = await getDoc(docRef);
-          const count = docSnap.data().likes || 0;
-          await updateDoc(docRef, { likes: count + 1 });
-          $("#count").text(`❤️${count + 1}`);
-          alert("하트가 +1 되었습니다!");
-        } catch (err) {
-          console.error("Error adding like: ", err);
-        }
-      });
-    });
-  </script>
 </body>
 
 </html>
