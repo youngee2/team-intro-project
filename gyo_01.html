@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>남궁교 소개 페이지</title>
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="module" src="../js/intro_ahyoung.js"></script>
+
+<style>
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+
+body {
+    width: 1400px;
+    margin: 0px auto 0px auto;
+}
+
+.intro_page {
+    width: 1400px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.member {
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.member h1 {
+    margin: 20px auto 20px 0;
+}
+
+.back_btn {
+    width: 20px;
+    margin: 30px auto 30px auto;
+    padding: 0px 20px 0px 20px;
+}
+
+.member_card {
+    margin: 300px 200px 300px 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.image_array {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text {
+    margin-left: 150px;
+}
+
+.profile_img {
+    border-radius: 20px;
+
+}
+
+.sub_title {
+    margin-bottom: 40px;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    padding: 20px 10px 30px 20px
+}
+
+.link_logo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.like {
+    padding: 20px 10px 30px 20px;
+    font-size: 40px;
+    text-decoration: none;
+
+}
+</style>
+
+</head>
+
+<body>
+
+    <div class="intro_page">
+        <div class="member">
+            <a href="../../index.html"><img class="back_btn" src="../../back_btn.png" alt="뒤로가기"></a>
+            <h1>Member</h1>
+        </div>
+
+        <div class="member_card">
+            <div class="image_array">
+                <img class="profile_img" src="../images/profile.png">
+                <div class="link_logo">
+                    <a href="https://github.com/youngee2"><img class="logo"
+                            src="https://img.icons8.com/m_outlined/512/github.png"></a>
+                    <a href="https://young2develop.tistory.com/"><img class="logo" src="../../logomark.png"></a>
+
+
+                </div>
+            </div>
+            <!--자기소개-->
+            <div class="text">
+                <h1>남궁교</h1>
+                <p class="sub_title">16조 팀원</p>
+                <p>안녕하세요
+                    <br> 성이 남궁씨이고 이름이 교 입니다. 
+                    <br> 코딩을 처음 배우는 사람입니다.
+                    <br> 많이 부족하지만 묵묵히 잘 해내겠습니다.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</body>
+
+</html>
