@@ -2,10 +2,90 @@
 <html lang="en">
 
 <head>
+  <!-- Pretendard Webfont -->
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>강산 소개 페이지</title>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      onSnapshot,
+      serverTimestamp,
+      query,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    import {
+      getDatabase,
+      ref,
+      runTransaction,
+      onValue
+    } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+
+    // Firebase 설정
+    const firebaseConfig = {
+      apiKey: "AIzaSyBzp7eHyfzy5_ccs1x2Hikm3RoE5BrERak",
+      authDomain: "intro-sankang.firebaseapp.com",
+      databaseURL: "https://intro-sankang-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "intro-sankang",
+      storageBucket: "intro-sankang.appspot.com",
+      messagingSenderId: "938592955369",
+      appId: "1:938592955369:web:5f4dd18b1c1d67c8c23978",
+      measurementId: "G-6VFYZ20J8X"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const rtdb = getDatabase(app);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // 방문자 수 카운트
+      const visitRef = ref(rtdb, "visitors/count");
+      runTransaction(visitRef, (current) => (current || 0) + 1);
+      onValue(visitRef, (snapshot) => {
+        const count = snapshot.val();
+        document.getElementById("visitor-count").innerText = `방문자 수: ${count}`;
+      });
+
+      // 방명록 등록
+      document.getElementById("submitBtn").addEventListener("click", async () => {
+        const name = document.getElementById("nameInput").value.trim();
+        const msg = document.getElementById("msgInput").value.trim();
+        if (name && msg) {
+          await addDoc(collection(db, "guestbook"), {
+            name,
+            message: msg,
+            timestamp: serverTimestamp()
+          });
+          document.getElementById("nameInput").value = "";
+          document.getElementById("msgInput").value = "";
+        }
+      });
+
+      // 방명록 표시
+      const guestbookRef = collection(db, "guestbook");
+      const q = query(guestbookRef, orderBy("timestamp", "desc"));
+      onSnapshot(q, (snapshot) => {
+        const box = document.getElementById("guestbookBox");
+        box.innerHTML = "";
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          const div = document.createElement("div");
+          div.textContent = `📝 ${data.name}: ${data.message}`;
+          box.appendChild(div);
+        });
+      });
+    });
+  </script>
+
+
+
 
   <style>
     * {
@@ -95,20 +175,33 @@
       <a href="../../index.html"><img class="back_btn" src="../../back_btn.png" alt="뒤로가기" /></a>
       <h1>Member</h1>
     </div>
+    <!-- 방문자 수 표시 -->
+    <h2 id="visitor-count">방문자 수: ...</h2>
+
+    <!-- 방명록 입력 -->
+    <div style="margin-top: 40px;">
+      <h3>📖 방명록</h3>
+      <input type="text" id="nameInput" placeholder="이름 입력" />
+      <input type="text" id="msgInput" placeholder="메시지 입력" />
+      <button id="submitBtn">등록</button>
+    </div>
+
+    <!-- 방명록 목록 -->
+    <div id="guestbookBox" style="margin-top: 20px;"></div>
+
 
     <!--이미지-->
     <div class="member_card">
       <div class="image_array">
-        <img class="profile_img" src="../images/profile.png" />
+        <img class="profile_img"
+          src="https://avatars.githubusercontent.com/u/139611910?s=400&u=76ee96c3f13dc385dcbf3ee3ee9ee4f82ba4374f&v=4" />
         <div class="link_logo">
-          <a href="https://github.com/youngee2">
+          <a href="https://github.com/ROKSSAN">
             <img class="logo" src="https://img.icons8.com/m_outlined/512/github.png" />
           </a>
-          <a href="https://young2develop.tistory.com/">
-            <img class="logo" src="../images/logomark.png" />
+          <a href="https://velog.io/@rokssan/posts">
+            <img class="logo" src="../../velog.png" />
           </a>
-          <a id="likeBtn" class="like" href="#">❤️</a>
-          <p id="count"></p>
         </div>
       </div>
 
@@ -118,6 +211,13 @@
         <p class="sub_title">16조 팀원</p>
         <p>안녕하세요</p>
       </div>
+      <!-- 사진 넣을 공간 -->
+      <div class="photo-section" style="margin-top: 40px;">
+        <h3>📷 관련 사진</h3>
+        <img id="profile-photo" src="https://via.placeholder.com/400x250?text=사진+여기에+나와요" alt="프로필 관련 사진"
+          style="border-radius: 12px; max-width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+      </div>
+
     </div>
   </div>
 </body>
